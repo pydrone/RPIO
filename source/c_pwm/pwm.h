@@ -39,6 +39,7 @@ int is_setup(void);
 int is_channel_initialized(int channel);
 int get_pulse_incr_us(void);
 int get_channel_subcycle_time_us(int channel);
+void seek(int channel, int seek_time);
 
 #define DELAY_VIA_PWM   0
 #define DELAY_VIA_PCM   1

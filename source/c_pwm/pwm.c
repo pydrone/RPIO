@@ -51,13 +51,13 @@
  * PULSE WIDTH INCREMENT GRANULARITY
  * ---------------------------------
  * Another very important setting is the pulse width increment granularity, which
- * defaults to 10µs and is used for _all_ DMA channels (since its passed to the PWM
+ * defaults to 10ï¿½s and is used for _all_ DMA channels (since its passed to the PWM
  * timing hardware). Under the hood you need to set the pulse widths as multiples
- * of the increment-granularity. Eg. in order to set 500µs pulses with a granularity
- * setting of 10µs, you'll need to set the pulse-width as 50 (50 * 10µs = 500µs).
+ * of the increment-granularity. Eg. in order to set 500ï¿½s pulses with a granularity
+ * setting of 10ï¿½s, you'll need to set the pulse-width as 50 (50 * 10ï¿½s = 500ï¿½s).
  * Less granularity needs more DMA memory.
  *
- * To achieve shorter pulses than 10µs, you simply need set a lower granularity.
+ * To achieve shorter pulses than 10ï¿½s, you simply need set a lower granularity.
  *
  *
  * WARNING
@@ -788,6 +788,23 @@ int
 get_channel_subcycle_time_us(int channel)
 {
     return channels[channel].subcycle_time_us;
+}
+
+// Seek to specified time on this channel
+void seek(int channel, int seek_time)
+{
+    dma_cb_t *cbp = (dma_cb_t *) get_cb(channel) + (seek_time * 2);
+    if((channels[channel].dma_reg[DMA_CS] & 0x1) == 0){
+        // Not Active
+        return;
+    }
+    channels[channel].dma_reg[DMA_CS] = DMA_RESET; // DMA channel reset
+    udelay(10);
+    channels[channel].dma_reg[DMA_CS] = DMA_INT | DMA_END; // Interrupt status & DMA end flag
+    channels[channel].dma_reg[DMA_CONBLK_AD] = mem_virt_to_phys(channel, cbp);  // initial CB
+    channels[channel].dma_reg[DMA_DEBUG] = 7; // clear debug error flags
+    channels[channel].dma_reg[DMA_CS] = 0x10880001;    // go, mid priority, wait for outstanding writes
+
 }
 
 int

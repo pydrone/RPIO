@@ -147,6 +147,9 @@ def get_channel_subcycle_time_us(channel):
     """ Returns this channels subcycle time in us """
     return _PWM.get_channel_subcycle_time_us(channel)
 
+seek = _PWM.seek
+    
+
 
 class Servo:
     """

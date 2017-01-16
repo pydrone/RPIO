@@ -200,6 +200,22 @@ py_get_channel_subcycle_time_us(PyObject *self, PyObject *args)
     return Py_BuildValue("i", get_channel_subcycle_time_us(channel));
 }
 
+// python function void seek(int channel, int seek_time);
+static PyObject*
+py_seek(PyObject *self, PyObject *args)
+{
+    int channel, seek_time;
+
+    if (!PyArg_ParseTuple(args, "ii", &channel, &seek_time))
+        return NULL;
+
+    seek(channel, seek_time);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+
+}
+
 static PyMethodDef pwm_methods[] = {
     {"setup", py_setup, METH_VARARGS, "Setup the DMA-PWM system"},
     {"cleanup", py_cleanup, METH_VARARGS, "Stop all pwms and clean up DMA engine"},
@@ -213,6 +229,7 @@ static PyMethodDef pwm_methods[] = {
     {"get_pulse_incr_us", py_get_pulse_incr_us, METH_VARARGS, "Gets the pulse width increment granularity in us"},
     {"is_channel_initialized", py_is_channel_initialized, METH_VARARGS, "Returns 1 if channel has been initialized, else 0"},
     {"get_channel_subcycle_time_us", py_get_channel_subcycle_time_us, METH_VARARGS, "Gets the subcycle time in us of the specified channel"},
+    {"seek", py_seek, METH_VARARGS, "Seek to specified time on this channel"},
     {NULL, NULL, 0, NULL}
 };
 
