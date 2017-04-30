@@ -51,13 +51,13 @@
  * PULSE WIDTH INCREMENT GRANULARITY
  * ---------------------------------
  * Another very important setting is the pulse width increment granularity, which
- * defaults to 10ï¿½s and is used for _all_ DMA channels (since its passed to the PWM
+ * defaults to 10µs and is used for _all_ DMA channels (since its passed to the PWM
  * timing hardware). Under the hood you need to set the pulse widths as multiples
- * of the increment-granularity. Eg. in order to set 500ï¿½s pulses with a granularity
- * setting of 10ï¿½s, you'll need to set the pulse-width as 50 (50 * 10ï¿½s = 500ï¿½s).
+ * of the increment-granularity. Eg. in order to set 500µs pulses with a granularity
+ * setting of 10µs, you'll need to set the pulse-width as 50 (50 * 10µs = 500µs).
  * Less granularity needs more DMA memory.
  *
- * To achieve shorter pulses than 10ï¿½s, you simply need set a lower granularity.
+ * To achieve shorter pulses than 10µs, you simply need set a lower granularity.
  *
  *
  * WARNING
